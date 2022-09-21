@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zerock.mapper.DiaryMapper">
+	<select id="getList" resultType="org.zerock.domain.DiaryVO">
+		<![CDATA[
+			select * from tbl_diary where id = #{id} order by dno desc
+		]]>
+	</select>
+	<insert id="insert">
+		insert into tbl_diary (dno, id, title, btitle, writer, publisher, content)
+		values(seq_diary.nextval, #{id}, #{title}, #{btitle}, #{writer}, #{publisher}, #{content})
+	</insert>
+	<insert id="insertSelectKey">
+		<selectKey keyProperty="dno" order="BEFORE" resultType="long">
+			select seq_diary.nextval from dual
+		</selectKey>
+		insert into tbl_diary (dno, id, title, btitle, writer , publisher, content)
+		values (#{dno}, #{id}, #{title}, #{btitle}, #{writer}, #{publisher}, #{content})
+	</insert>
+	<select id="read" resultType="org.zerock.domain.DiaryVO">
+		select * from tbl_diary where dno = #{dno}
+	</select>
+	<delete id="delete">
+		delete from tbl_diary where dno = #{dno}
+	</delete>
+	<update id="update">
+		update tbl_diary set title=#{title}, btitle=#{btitle}, publisher=#{publisher}, content= #{content}, updateDate= sysdate where dno = #{dno}
+	</update>
+	
+</mapper>
